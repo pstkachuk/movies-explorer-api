@@ -11,6 +11,7 @@ const cors = require('./middlewares/cors');
 const usersRouter = require('./routes/users');
 const moviesRouter = require('./routes/movies');
 const { login, createUser, logout } = require('./controllers/users');
+const errorsHandler = require('./middlewares/errorsHandler');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -52,11 +53,7 @@ app.use(errorLogger);
 
 app.use(errors({ message: 'Ошибка валидации. Проверьте вводимые данные' }));
 
-app.use((err, req, res, next) => { // централизованный обработчик ошибок. Вывести в отдельный файл
-  const { statusCode = 500, message } = err;
-  res.status(statusCode).send({ message: statusCode === 500 ? 'Ошибка на сервере' : message });
-  next();
-});
+app.use(errorsHandler);
 
 app.listen(PORT, () => {
   console.log(`Сервер запущен на порте: ${PORT}`);
