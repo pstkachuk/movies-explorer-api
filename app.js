@@ -17,7 +17,7 @@ const { PORT = 3000 } = process.env;
 const app = express();
 app.use(cors);
 
-mongoose.connect('mongodb://localhost:27017/filmsdb', { // база данных
+mongoose.connect('mongodb://localhost:27017/moviesdb', { // база данных
   useNewUrlParser: true,
 });
 
