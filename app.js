@@ -9,6 +9,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const cors = require('./middlewares/cors');
 const errorsHandler = require('./middlewares/errorsHandler');
 const routes = require('./routes/index');
+const limiter = require('./utils/config');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -22,6 +23,7 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(requestLogger);
+app.use(limiter);
 app.use(helmet());
 app.use(routes);
 app.use(errorLogger);
