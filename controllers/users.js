@@ -4,6 +4,13 @@ const User = require('../models/user');
 const ValidationError = require('../errors/ValidationError');
 const NotFoundError = require('../errors/NotFoundError');
 const ConflictError = require('../errors/ConflictError');
+const secretKey = require('../utils/config');
+const {
+  messageValidationError,
+  messageEmailAlreadyExist,
+  messageUserNotFound,
+  messageUserLogout,
+} = require('../utils/const');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -30,9 +37,9 @@ const createUser = (req, res, next) => {
         }))
         .catch((err) => {
           if (err.name === 'ValidationError') {
-            next(new ValidationError('Ошибка валидации, проверьте правильность заполнения полей'));
+            next(new ValidationError(messageValidationError));
           } else if (err.code === 11000) {
-            next(new ConflictError('Пользователь с таким Email уже существует'));
+            next(new ConflictError(messageEmailAlreadyExist));
           } else {
             next(err);
           }
@@ -54,14 +61,14 @@ const setUserInfo = (req, res, next) => {
   const { name, email } = req.body;
   User.findByIdAndUpdate(req.user._id, { name, email }, { new: true, runValidators: true })
     .orFail(() => {
-      throw new NotFoundError('Пользователь не найден');
+      throw new NotFoundError(messageUserNotFound);
     })
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new ValidationError('Некорректные данные'));
+        next(new ValidationError(messageValidationError));
       } else if (err.name === 'ValidationError') {
-        next(new ValidationError('Ошибка валидации, проверьте правильность заполнения полей'));
+        next(new ValidationError(messageValidationError));
       } else {
         next(err);
       }
@@ -74,7 +81,7 @@ const login = (req, res, next) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'super-mega-giga-very-very-strong-secret', { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : secretKey, { expiresIn: '7d' });
       res.cookie('auth', token, {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
@@ -93,7 +100,7 @@ const login = (req, res, next) => {
 // логаут
 const logout = (req, res) => {
   res.clearCookie('auth')
-    .send({ message: 'Пользователь вышел из сессии' });
+    .send({ message: messageUserLogout });
 };
 
 module.exports = {

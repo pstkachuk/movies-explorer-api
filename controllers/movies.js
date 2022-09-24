@@ -1,6 +1,12 @@
 const ValidationError = require('../errors/ValidationError');
 const NotFoundError = require('../errors/NotFoundError');
 const ForbiddenError = require('../errors/ForbiddenError');
+const {
+  messageValidationError,
+  messageFilmNotFound,
+  messageFilmDeleteError,
+  messageFilmIsDeleted,
+} = require('../utils/const');
 
 const Movie = require('../models/movie');
 
@@ -50,7 +56,7 @@ const createMovie = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new ValidationError('Ошибка валидации, проверьте правильность заполнения полей'));
+        next(new ValidationError(messageValidationError));
       } else {
         next(err);
       }
@@ -62,20 +68,20 @@ const deleteMovie = (req, res, next) => {
   Movie.findById(req.params.movieId)
     .then((movie) => {
       if (!movie) {
-        throw new NotFoundError('Фильм не найден');
+        throw new NotFoundError(messageFilmNotFound);
       }
       if (movie.owner.toString() !== req.user._id) {
-        return next(new ForbiddenError('Нельзя удалить чужую карточку'));
+        return next(new ForbiddenError(messageFilmDeleteError));
       }
       return Movie.findByIdAndRemove(req.params.movieId)
         .then((deletedmovie) => {
-          res.send({ message: 'Фильм удален', deletedmovie });
+          res.send({ message: messageFilmIsDeleted, deletedmovie });
         })
         .catch(next);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new ValidationError('Некорректные данные'));
+        next(new ValidationError(messageValidationError));
       } else {
         next(err);
       }

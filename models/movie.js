@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { isURL } = require('validator');
+const { messageValidationError } = require('../utils/const');
 
 const movieSchema = new mongoose.Schema({
   director: {
@@ -25,17 +26,17 @@ const movieSchema = new mongoose.Schema({
   image: {
     type: String,
     required: true,
-    validate: [isURL, 'Введёны некорректные данные'],
+    validate: [isURL, messageValidationError],
   },
   trailerLink: {
     type: String,
     required: true,
-    validate: [isURL, 'Введёны некорректные данные'],
+    validate: [isURL, messageValidationError],
   },
   thumbnail: {
     type: String,
     required: true,
-    validate: [isURL, 'Введёны некорректные данные'],
+    validate: [isURL, messageValidationError],
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
