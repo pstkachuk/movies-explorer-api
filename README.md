@@ -34,8 +34,6 @@
 `npm run dev` — запускает сервер с hot-reload
 
 
-## Ссылки:
+## Ссылка:
 
-* Бэкенд 
-
-* публичный ip-адресс сервера: 
+https://api.sfd.movies.nomorepartiesxyz.ru
