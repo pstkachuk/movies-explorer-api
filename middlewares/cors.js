@@ -2,6 +2,8 @@ const allowedCors = [
   'http://localhost:3000',
   'http://localhost:3010',
   'http://localhost:3001',
+  'https://api.sfd.movies.nomorepartiesxyz.ru',
+  'http://api.sfd.movies.nomorepartiesxyz.ru',
 ];
 
 const cors = (req, res, next) => {
