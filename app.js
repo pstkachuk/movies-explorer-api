@@ -12,7 +12,7 @@ const routes = require('./routes/index');
 const { limiter, dataBase } = require('./utils/config');
 const { messageValidationError } = require('./utils/const');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3001 } = process.env;
 const app = express();
 
 mongoose.connect(dataBase, {
