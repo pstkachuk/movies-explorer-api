@@ -4,7 +4,7 @@ const User = require('../models/user');
 const ValidationError = require('../errors/ValidationError');
 const NotFoundError = require('../errors/NotFoundError');
 const ConflictError = require('../errors/ConflictError');
-const secretKey = require('../utils/config');
+const { secretKey } = require('../utils/config');
 const {
   messageValidationError,
   messageEmailAlreadyExist,
@@ -44,7 +44,8 @@ const createUser = (req, res, next) => {
             next(err);
           }
         });
-    });
+    })
+    .catch(next);
 };
 
 // получить данные пользователя
@@ -69,6 +70,8 @@ const setUserInfo = (req, res, next) => {
         next(new ValidationError(messageValidationError));
       } else if (err.name === 'ValidationError') {
         next(new ValidationError(messageValidationError));
+      } else if (err.code === 11000) {
+        next(new ConflictError(messageEmailAlreadyExist));
       } else {
         next(err);
       }

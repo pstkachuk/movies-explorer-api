@@ -12,10 +12,10 @@ const routes = require('./routes/index');
 const { limiter, dataBase } = require('./utils/config');
 const { messageValidationError } = require('./utils/const');
 
-const { PORT = 3001 } = process.env;
+const { PORT = 3001, NODE_ENV, DATABASE } = process.env;
 const app = express();
 
-mongoose.connect(dataBase, {
+mongoose.connect(NODE_ENV === 'production' ? DATABASE : dataBase, {
   useNewUrlParser: true,
 });
 app.use(cors);

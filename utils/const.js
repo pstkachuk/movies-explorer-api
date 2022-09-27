@@ -1,5 +1,3 @@
-const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/i;
-
 const messageValidationError = 'Ошибка. Проверьте вводимые данные';
 const messageNeedLogin = 'Необходимо авторизироваться';
 const messageServerError = 'Ошибка на сервере';
@@ -11,9 +9,9 @@ const messageFilmIsDeleted = 'Фильм удален';
 const messageEmailAlreadyExist = 'Пользователь с таким Email уже существует';
 const messageUserNotFound = 'Пользователь не найден';
 const messageUserLogout = 'Пользователь вышел из сессии';
+const messageWrongURL = 'Некорректный URL';
 
 module.exports = {
-  urlRegex,
   messageValidationError,
   messageNeedLogin,
   messageServerError,
@@ -25,4 +23,5 @@ module.exports = {
   messageEmailAlreadyExist,
   messageUserNotFound,
   messageUserLogout,
+  messageWrongURL,
 };
