@@ -12,7 +12,7 @@ const Movie = require('../models/movie');
 
 // вернуть сохраненные фильмы
 const getSavedMovies = (req, res, next) => {
-  Movie.find({})
+  Movie.find({}).sort({ createdAt: -1 })
     .then((movies) => {
       res.send(movies);
     })
